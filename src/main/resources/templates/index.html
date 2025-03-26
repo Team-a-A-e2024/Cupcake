@@ -1,13 +1,65 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<title>Frontpage</title>
+<title>Olskers Cupcakes</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+<link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
 </head>
-
 <body>
-<h1>Welcome to the Javalin / Thymeleaf demo</h1>
-<p>This is your first web application in this world</p>
+<div class="wrapper">
+    <a href="" id="header-banner" class="desktop">
+        <div></div>
+    </a>
+
+    <div class="mobile" id="header-banner-mobile">
+        <img src="../public/images/logo.png" alt="Cupcake logo">
+        <div>
+            <h1 class="banner">Olskers cupcakes</h1>
+            <h2 class="banner">Mums filibaba</h2>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li class="mobile" id="burger-menu"><img src="../public/images/burger_menu.svg"></li>
+            <li class="menu-item desktop"><a href="">Ordrer</a></li>
+            <li class="right-align-nav"><a href="" id="log-in-button">log ind</a></li>
+            <li><a href=""><img id="basket" src="../public/images/basket.png"></a></li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <h1>Velkommen ombord</h1>
+        <h2 class="desktop">Øens bedste cupcakes. Vælg og bestil her:</h2>
+        <h2 class="mobile center-text">Øens bedste cupcakes.</h2>
+        <br class="mobile">
+        <h3 class="mobile center-text">Vælg og bestil her:</h3>
+        <form method="post" enctype="multipart/form-data">
+            <div class="cupcake-form">
+                <label for="bottom">Vælg bund</label>
+                <select name="bottom" id="bottom">
+                    <option value="" disabled selected>Vælg bund</option>
+                    <option th:each="bottom : ${bottomTypes}" th:value="${bottom.bottom}"
+                            th:text="${bottom.bottom} + ' ' + ${bottom.price} + ' kr.'"></option>
+                </select>
+
+                <label for="topping">Vælg topping</label>
+                <select name="topping" id="topping">
+                    <option value="" disabled selected>Vælg toppping</option>
+                    <option th:each="topping : ${toppingTypes}" th:value="${topping.topping}"
+                            th:text="${topping.topping} + ' ' + ${topping.price} + ' kr.'"></option>
+                </select>
+
+                <label for="amount">Vælg antal</label>
+                <select name="amount" id="amount">
+                    <option value="" disabled selected>Vælg antal</option>
+                    <option th:each="amount : ${amounts}" th:value="${amount}" th:text="${amount}"></option>
+                </select>
+            </div>
+            <button type="submit" formaction="/order/create" id="add-to-basket-button">Læg i kurv</button>
+        </form>
+    </div>
+</div>
+<footer></footer>
 </body>
 </html>
