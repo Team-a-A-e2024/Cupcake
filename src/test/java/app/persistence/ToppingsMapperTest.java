@@ -2,10 +2,7 @@ package app.persistence;
 
 import app.entities.Topping;
 import app.exceptions.DatabaseException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("IntegrationTest")
 class ToppingsMapperTest {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";

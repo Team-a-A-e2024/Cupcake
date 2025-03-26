@@ -2,10 +2,7 @@ package app.persistence;
 
 import app.entities.Order;
 import app.exceptions.DatabaseException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +10,7 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("IntegrationTest")
 class OrdersMapperTest {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
