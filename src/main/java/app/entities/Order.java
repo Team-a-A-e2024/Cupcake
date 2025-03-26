@@ -1,5 +1,7 @@
 package app.entities;
 
+import java.util.Objects;
+
 public class Order {
     private int id;
     private int userId;
@@ -83,5 +85,17 @@ public class Order {
                 ", amount=" + amount +
                 ", isProcessed=" + isProcessed +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return id == order.id && userId == order.userId && amount == order.amount && isProcessed == order.isProcessed && Objects.equals(topping, order.topping) && Objects.equals(bottom, order.bottom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, topping, bottom, amount, isProcessed);
     }
 }
