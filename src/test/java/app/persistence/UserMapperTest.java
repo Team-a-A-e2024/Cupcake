@@ -21,7 +21,6 @@ class UserMapperTest {
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=test";
     private static final String DB = "cupcake";
     private static ConnectionPool connectionPool;
-    private static UserMapper userMapper;
 
     @BeforeAll
     public static void setUpClass() {
@@ -109,14 +108,21 @@ class UserMapperTest {
     void setUp() {
         try (Connection testConnection = connectionPool.getConnection()) { //connects to database
             try (Statement stmt = testConnection.createStatement()) { //tries to create a statement
-                stmt.execute("INSERT INTO users (email, password, role, credit)\n" +
+                stmt.execute("DELETE FROM test.orders");
+                stmt.execute("DELETE FROM test.users");
+                stmt.execute("DELETE FROM test.toppings");
+                stmt.execute("DELETE FROM test.bottoms");
+
+
+
+                stmt.execute("INSERT INTO test.users (email, password, role, credit)\n" +
                         "VALUES\n" +
                         "\t('admin@olsker.dk', 'Cupc4k3!', 'admin', 999999999),\n" +
                         "\t('cph-ab632@cphbusiness.dk', 'Test1', null, 0),\n" +
                         "\t('cph-ea178@cphbusiness.dk', 'Test2', null, 0),\n" +
                         "\t('cph-fb157@cphbusiness.dk', 'Test3', null, 0),\n" +
                         "\t('cph-ta241@cphbusiness.dk', 'Test4', null, 0);");
-                stmt.execute("INSERT INTO toppings (topping, price)\n" +
+                stmt.execute("INSERT INTO test.toppings (topping, price)\n" +
                         "VALUES\n" +
                         "\t('Chocolate', 5.00),\n" +
                         "\t('Blueberry', 5.00),\n" +
@@ -127,14 +133,14 @@ class UserMapperTest {
                         "\t('Orange', 8.00),\n" +
                         "\t('Lemon', 8.00),\n" +
                         "\t('Blue cheese', 9.00);");
-                stmt.execute("INSERT INTO bottoms (bottom, price)\n" +
+                stmt.execute("INSERT INTO test.bottoms (bottom, price)\n" +
                         "VALUES \n" +
                         "\t('Chocolate', 5.00),\n" +
                         "\t('Vanilla', 5.00),\n" +
                         "\t('Nutmeg', 5.00),\n" +
                         "\t('Pistacio', 6.00),\n" +
                         "\t('Almond', 7.00);");
-                stmt.execute("INSERT INTO orders (user_id, topping, bottom, amount, is_processed)\n" +
+                stmt.execute("INSERT INTO test.orders (user_id, topping, bottom, amount, is_processed)\n" +
                         "VALUES\n" +
                         "\t(1, 'Chocolate', 'Chocolate', 1, false),\n" +
                         "\t(1, 'Blueberry', 'Vanilla', 1, true),\n" +
@@ -158,15 +164,9 @@ class UserMapperTest {
     }
 
     @Test
-    void testinsert() throws SQLException {
-        try {
-            User u1 = new User("test4@test.test", "1234", null, 1234d);
-            UserMapper.addUserByObject(connectionPool, u1);
-
-            Assertions.assertNotNull(u1);
-        } catch (Exception Ex) {
-            Assertions.assertTrue(false);
-        }
-
+    void testinsert() throws DatabaseException {
+        User u1 = new User("test4@test.test", "1234", null, 1234d);
+        UserMapper.addUserByObject(connectionPool, u1);
+        Assertions.assertNotNull(u1);
     }
 }
