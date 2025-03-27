@@ -1,8 +1,11 @@
 package app.test;
 
 import app.exceptions.DatabaseException;
+import app.persistence.BottomsMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.UserMapper;
+import app.persistence.OrdersMapper;
+import app.persistence.ToppingsMapper;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,6 +24,9 @@ public class SetupDatabase {
     }
 
     public static void createTables() throws DatabaseException {
+        BottomsMapper.setConnectionPool(connectionPool);
+        ToppingsMapper.setConnectionPool(connectionPool);
+        OrdersMapper.setConnectionPool(connectionPool);
         UserMapper.setConnectionPool(connectionPool);
 
         try {
@@ -44,7 +50,8 @@ public class SetupDatabase {
                 stmt.execute("ALTER TABLE test.orders ALTER COLUMN id SET DEFAULT nextval('test.orders_id_seq')");
                 stmt.execute("CREATE SEQUENCE test.users_id_seq");
                 stmt.execute("ALTER TABLE test.users ALTER COLUMN id SET DEFAULT nextval('test.users_id_seq')");
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 throw new DatabaseException(e.getMessage());
             }
 
