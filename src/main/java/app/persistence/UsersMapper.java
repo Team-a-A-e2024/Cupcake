@@ -60,9 +60,9 @@ public class UsersMapper {
             if (rs.next()) {
                 return new User(
                         rs.getInt("id"),
-                        rs.getString("role"),
                         rs.getString("email"),
                         rs.getString("password"),
+                        rs.getString("role"),
                         rs.getDouble("credit")
                 );
             }
@@ -88,9 +88,9 @@ public class UsersMapper {
             if (rs.next()) {
                 return new User(
                         rs.getInt("id"),
-                        rs.getString("role"),
                         rs.getString("email"),
                         rs.getString("password"),
+                        rs.getString("role"),
                         rs.getDouble("credit")
                 );
             }

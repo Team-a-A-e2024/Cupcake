@@ -1,5 +1,6 @@
 package app.persistence;
 
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.entities.User;
 import org.junit.jupiter.api.*;
@@ -30,9 +31,45 @@ class UsersMapperTest {
         }
     }
 
+    @AfterEach
+    void tearDown() {
+    }
+
     @Test
     void testConnection() throws SQLException {
         assertNotNull(SetupDatabase.getConnectionPool().getConnection());
+    }
+
+    @Test
+    void createUser() throws DatabaseException {
+        // Arrange
+        User expected = new User(6,"test","test",null,100 );
+
+        // Act
+        User actual = UsersMapper.addUserByObject(expected);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+    @Test
+    void getEmailValidUser() throws DatabaseException {
+        String email = "cph-ab632@cphbusiness.dk";
+
+        User user = UsersMapper.getUserByEmail(email);
+
+        assertNotNull(user);
+        assertEquals(email, user.getEmail());
+        assertNull(user.getRole());
+        assertEquals(0, user.getCredit());
+    }
+
+    @Test
+    void getEmailInvalidUser() throws DatabaseException {
+        String email = "fake";
+
+        User user = UsersMapper.getUserByEmail(email);
+
+        assertNull(user);
     }
 
     @Test
