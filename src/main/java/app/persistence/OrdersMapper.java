@@ -68,36 +68,4 @@ public class OrdersMapper {
 
         return orders;
     }
-
-    public static Map<String, Order> getCustomerAndOrder() throws DatabaseException {
-        Map<String, Order> customerAndOrders = new HashMap<>();
-
-        String sql = "SELECT u.email, o.* " +
-                "FROM users u " +
-                "INNER JOIN orders o " +
-                "ON o.user_id = u.id";
-
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql);
-        ) {
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                String user = rs.getString("email");
-                int id = rs.getInt("id");
-                int userId = rs.getInt("user_id");
-                String topping = rs.getString("topping");
-                String bottom = rs.getString("bottom");
-                int amount = rs.getInt("amount");
-                boolean isProcessed = rs.getBoolean("is_processed");
-                customerAndOrders.put(user, new Order(id, userId, topping, bottom, amount, isProcessed));
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-
-        return customerAndOrders;
-    }
 }
