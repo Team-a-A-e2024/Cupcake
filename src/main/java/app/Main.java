@@ -2,6 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.AdminController;
 import app.controllers.OrderController;
 import app.persistence.BottomsMapper;
 import app.persistence.ConnectionPool;
@@ -39,5 +40,6 @@ public class Main {
 
         // Routing
         OrderController.routes(app);
+        AdminController.routes(app);
     }
 }
