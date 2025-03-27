@@ -36,7 +36,7 @@ public class LoginController {
 
         if (user != null) {
             ctx.sessionAttribute("user", user);
-            ctx.redirect("/index");
+            ctx.redirect("/");
         } else {
             ctx.attribute("error", "Invalid email or password");
             ctx.render("login.html");

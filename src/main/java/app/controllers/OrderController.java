@@ -4,6 +4,7 @@ import app.entities.Bottom;
 import app.entities.Order;
 import app.entities.Topping;
 import app.exceptions.DatabaseException;
+import app.models.User;
 import app.persistence.BottomsMapper;
 import app.persistence.OrdersMapper;
 import app.persistence.ToppingsMapper;
@@ -24,6 +25,13 @@ public class OrderController {
         getToppings(ctx);
         getAmount(ctx);
         ctx.render("index.html");
+        User user = ctx.sessionAttribute("user");
+        if (user == null) {
+            ctx.attribute("email", "");
+            return;
+        }
+        ctx.attribute("email", user.getEmail());
+        ctx.render("index.html");
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
@@ -31,8 +39,9 @@ public class OrderController {
         String topping = ctx.formParam("topping");
         int amount = Integer.parseInt(ctx.formParam("amount"));
 
-        //TODO: Replace hardcoded userId
-        Order order = new Order(1, topping, bottom, amount, false);
+        User user = ctx.sessionAttribute("user");
+        int userId = user.getId();
+        Order order = new Order(userId, topping, bottom, amount, false);
         OrdersMapper.createOrder(order);
         ctx.status(200);
         displayFrontpage(ctx);
@@ -52,7 +61,7 @@ public class OrderController {
         int amountLimit = 100;
         int[] amount = new int[amountLimit];
         for (int i = 0; i < amount.length; i++) {
-            amount[i] = i+1;
+            amount[i] = i + 1;
         }
         ctx.attribute("amounts", amount);
     }

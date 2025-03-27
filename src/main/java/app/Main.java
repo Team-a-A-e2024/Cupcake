@@ -5,7 +5,6 @@ import app.config.ThymeleafConfig;
 import app.controller.LoginController;
 import app.controllers.SignupController;
 import app.controllers.OrderController;
-import app.models.User;
 import app.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -39,17 +38,5 @@ public class Main {
         OrderController.routes(app);
         LoginController.routes(app);
         SignupController.routes(app);
-
-        app.get("/index", ctx -> {
-            User user = ctx.sessionAttribute("user");
-            if (user == null) {
-                ctx.redirect("/login");
-                return;
-            }
-            ctx.attribute("email", user.getEmail());
-            ctx.render("index.html");
-        });
-
-
     }
 }
