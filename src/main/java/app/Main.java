@@ -2,19 +2,13 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.SignupController;
 import app.controllers.OrderController;
-import app.persistence.BottomsMapper;
-import app.persistence.ConnectionPool;
-import app.persistence.OrdersMapper;
-import app.persistence.ToppingsMapper;
+import app.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
-import java.util.logging.Logger;
-
 public class Main {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
@@ -36,8 +30,11 @@ public class Main {
         OrdersMapper.setConnectionPool(connectionPool);
         BottomsMapper.setConnectionPool(connectionPool);
         ToppingsMapper.setConnectionPool(connectionPool);
+        UsersMapper.setConnectionPool(connectionPool);
 
         // Routing
         OrderController.routes(app);
+        SignupController.routes(app);
+
     }
 }
