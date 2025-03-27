@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Frontpage</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<!--insert static across page header here-->
+
+<div>
+    <h1>Velkommen ombord</h1>
+    <h2>Øens bedste cupcakes</h2>
+
+    <p class="splashtext">sign up:</p>
+    <form class="signup-user" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="email">email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <button class="button" type="submit" formaction="/signup">login</button>
+    </form>
+    <div class="successstate" th:text="${success.string}"></div>
+</div>
+
+
+</body>
+</html>

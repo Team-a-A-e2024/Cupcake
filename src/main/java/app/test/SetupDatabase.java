@@ -1,10 +1,7 @@
 package app.test;
 
 import app.exceptions.DatabaseException;
-import app.persistence.BottomsMapper;
-import app.persistence.ConnectionPool;
-import app.persistence.OrdersMapper;
-import app.persistence.ToppingsMapper;
+import app.persistence.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,6 +23,7 @@ public class SetupDatabase {
         BottomsMapper.setConnectionPool(connectionPool);
         ToppingsMapper.setConnectionPool(connectionPool);
         OrdersMapper.setConnectionPool(connectionPool);
+        UsersMapper.setConnectionPool(connectionPool);
 
         try {
             Connection connection = connectionPool.getConnection();

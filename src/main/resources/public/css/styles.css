@@ -39,6 +39,10 @@ ul {
     font-weight: bold;
 }
 
+ul li {
+    margin-right: 1rem;
+}
+
 .menu-item a {
     color: #999999;
 }
@@ -129,6 +133,20 @@ select {
 
 .mobile {
     display: none;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    position: relative;
+}
+
+#myLinks {
+    display: none;
+}
+
+.show {
+    display: block;
 }
 
 @media (max-width: 500px) {
@@ -230,5 +248,39 @@ select {
 
     ul {
         padding: 10px;
+        position: relative;
+    }
+
+    .topnav {
+        overflow: hidden;
+        background-color: #333;
+        position: relative;
+    }
+
+    .show {
+        display: flex !important;
+        flex-direction: column;
+        position: absolute;
+        top: 58px;
+        left: 0;
+        width: 100%;
+        background-color: #F0F0F0;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    #myLinks a {
+        color: #999999;
+        text-decoration: none;
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    #dropdown-menu {
+        aspect-ratio: 1;
+    }
+
+    .burger-menu-button {
+        width: 38px;
+        aspect-ratio: 1;
     }
 }
