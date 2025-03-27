@@ -23,7 +23,7 @@ public class OrderController {
         getBottoms(ctx);
         getToppings(ctx);
         getAmount(ctx);
-        ctx.render("login.html");
+        ctx.render("index.html");
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
