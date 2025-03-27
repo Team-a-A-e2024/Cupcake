@@ -17,6 +17,7 @@ public class User {
         this.role = role;
         this.credit = credit;
     }
+
     public User(String email, String password, String role, double credit) {
         this.email = email;
         this.password = password;
@@ -36,8 +37,6 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, email, password, role, credit);
     }
-
-    //getter and setters from here on
 
     public int getId() {
         return id;
