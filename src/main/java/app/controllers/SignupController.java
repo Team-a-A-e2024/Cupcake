@@ -29,7 +29,7 @@ public class SignupController {
             UsersMapper.addUserByObject(user);
         }
         catch (DatabaseException ex){
-            //todo: resolve
+            ex.printStackTrace();
             ctx.attribute("success",new StringToThymeleaf("signup failed"));
             ctx.render("createUser.html");
         }

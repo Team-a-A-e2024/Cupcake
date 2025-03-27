@@ -42,7 +42,7 @@ class UserMapperTest {
     @Test
     void createUser() throws DatabaseException {
         // Arrange
-        app.entities.User expected = new app.entities.User(6,"test@test.test","1234", null, 200d);
+        app.entities.User expected = new User(6,"test@test.test","1234", null, 200d);
 
         // Act
         User actual = UsersMapper.addUserByObject(expected);
