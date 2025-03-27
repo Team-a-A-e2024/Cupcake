@@ -1,28 +1,30 @@
 package app.entities;
 
-public class Order {
+import java.util.Objects;
 
+public class Order {
     private int id;
     private int userId;
     private String topping;
     private String bottom;
     private int amount;
-    private boolean is_Processed;
+    private boolean isProcessed;
 
-    public Order(int id, int userId, String topping, String bottom, int amount, boolean is_Processed) {
+    public Order(int id, int userId, String topping, String bottom, int amount, boolean isProcessed) {
         this.id = id;
         this.userId = userId;
         this.topping = topping;
         this.bottom = bottom;
         this.amount = amount;
-        this.is_Processed = is_Processed;
+        this.isProcessed = isProcessed;
     }
 
-    public Order(String topping, String bottom, int amount, boolean is_Processed) {
+    public Order(int userId, String topping, String bottom, int amount, boolean isProcessed) {
+        this.userId = userId;
         this.topping = topping;
         this.bottom = bottom;
         this.amount = amount;
-        this.is_Processed = is_Processed;
+        this.isProcessed = isProcessed;
     }
 
     public int getId() {
@@ -65,11 +67,35 @@ public class Order {
         this.amount = amount;
     }
 
-    public boolean isIs_Processed() {
-        return is_Processed;
+    public boolean isProcessed() {
+        return isProcessed;
     }
 
-    public void setIs_Processed(boolean is_Processed) {
-        this.is_Processed = is_Processed;
+    public void setProcessed(boolean processed) {
+        isProcessed = processed;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", topping='" + topping + '\'' +
+                ", bottom='" + bottom + '\'' +
+                ", amount=" + amount +
+                ", isProcessed=" + isProcessed +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return id == order.id && userId == order.userId && amount == order.amount && isProcessed == order.isProcessed && Objects.equals(topping, order.topping) && Objects.equals(bottom, order.bottom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, topping, bottom, amount, isProcessed);
     }
 }

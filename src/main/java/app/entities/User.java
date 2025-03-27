@@ -1,5 +1,7 @@
 package app.entities;
 
+import java.util.Objects;
+
 public class User {
 
     private int id;
@@ -20,6 +22,19 @@ public class User {
         this.password = password;
         this.role = role;
         this.credit = credit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Double.compare(credit, user.credit) == 0 && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, role, credit);
     }
 
     //getter and setters from here on

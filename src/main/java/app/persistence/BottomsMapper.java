@@ -1,35 +1,41 @@
 package app.persistence;
 
+import app.entities.Bottom;
 import app.exceptions.DatabaseException;
 
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BottomsMapper {
+    private static ConnectionPool connectionPool;
 
-    private final ConnectionPool connectionPool;
-
-    public BottomsMapper(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+    public static void setConnectionPool(ConnectionPool connectionPool) {
+        BottomsMapper.connectionPool = connectionPool;
     }
 
-    public Map<String, Integer> getAllBottoms() throws DatabaseException {
-        Map<String, Integer> bottoms = new HashMap<>();
+    public static List<Bottom> getBottoms() throws DatabaseException {
+        List<Bottom> bottoms = new ArrayList<>();
         String sql = "SELECT * FROM bottoms";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)){
-             ResultSet rs = ps.executeQuery();
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                String name = rs.getString("bottom");
-                int price = rs.getInt("price");
-                bottoms.put(name, price);
+                String bottom = rs.getString("bottom");
+                double price = rs.getDouble("price");
+                bottoms.add(new Bottom(bottom, price));
             }
         } catch (SQLException e) {
-            throw new DatabaseException(e, "Could not get bottoms from database");
+            throw new DatabaseException(e.getMessage());
         }
+
         return bottoms;
     }
 }

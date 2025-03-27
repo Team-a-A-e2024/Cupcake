@@ -2,15 +2,13 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
-import app.persistence.ConnectionPool;
+import app.controllers.SignupController;
+import app.controllers.OrderController;
+import app.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
-import java.util.logging.Logger;
-
 public class Main {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
@@ -23,13 +21,20 @@ public class Main {
         // Initializing Javalin and Jetty webserver
 
         Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("/public");
+            config.staticFiles.add("/");
             config.jetty.modifyServletContextHandler(handler ->  handler.setSessionHandler(SessionConfig.sessionConfig()));
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7070);
 
-        // Routing
+        // Mappers
+        OrdersMapper.setConnectionPool(connectionPool);
+        BottomsMapper.setConnectionPool(connectionPool);
+        ToppingsMapper.setConnectionPool(connectionPool);
+        UsersMapper.setConnectionPool(connectionPool);
 
-        app.get("/", ctx ->  ctx.render("index.html"));
+        // Routing
+        OrderController.routes(app);
+        SignupController.routes(app);
+
     }
 }

@@ -1,30 +1,42 @@
 package app.persistence;
 
+import app.entities.Topping;
 import app.exceptions.DatabaseException;
 
-import java.awt.image.DataBufferInt;
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ToppingsMapper {
+    private static ConnectionPool connectionPool;
 
-    public Map<String, Integer> getAllToppings(ConnectionPool connectionPool) throws DatabaseException {
-        Map<String, Integer> toppings = new HashMap<>();
+    public static void setConnectionPool(ConnectionPool connectionPool) {
+        ToppingsMapper.connectionPool = connectionPool;
+    }
+
+    public static List<Topping> getToppings() throws DatabaseException {
+        List<Topping> toppings = new ArrayList<>();
         String sql = "SELECT * FROM toppings";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)){
-             ResultSet rs = ps.executeQuery();
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                String name = rs.getString("topping");
-                int price = rs.getInt("price");
-                toppings.put(name, price);
+                String topping = rs.getString("topping");
+                double price = rs.getDouble("price");
+                toppings.add(new Topping(topping, price));
             }
-        } catch (SQLException e) {
-            throw new DatabaseException(e, "Could not get toppings from database");
         }
+        catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
         return toppings;
     }
 }
