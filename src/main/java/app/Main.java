@@ -2,12 +2,9 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.SignupController;
 import app.controllers.OrderController;
-import app.persistence.BottomsMapper;
-import app.controller.LoginController;
-import app.persistence.ConnectionPool;
-import app.persistence.OrdersMapper;
-import app.persistence.ToppingsMapper;
+import app.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -37,6 +34,7 @@ public class Main {
         OrdersMapper.setConnectionPool(connectionPool);
         BottomsMapper.setConnectionPool(connectionPool);
         ToppingsMapper.setConnectionPool(connectionPool);
+        UsersMapper.setConnectionPool(connectionPool);
 
         // Routing
 
@@ -45,5 +43,7 @@ public class Main {
         LoginController loginController = new LoginController(connectionPool);
         LoginController.routes(app);
         OrderController.routes(app);
+        SignupController.routes(app);
+
     }
 }
