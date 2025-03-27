@@ -32,4 +32,7 @@ public class UserMapper {
 
         return null;
     }
+
+    public static void setConnectionPool(ConnectionPool connectionPool) {
+    }
 }
