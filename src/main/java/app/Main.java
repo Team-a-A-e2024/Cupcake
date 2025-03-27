@@ -3,7 +3,11 @@ package app;
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
 import app.controllers.SignupController;
+import app.controllers.OrderController;
+import app.persistence.BottomsMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.OrdersMapper;
+import app.persistence.ToppingsMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -24,12 +28,18 @@ public class Main {
         // Initializing Javalin and Jetty webserver
 
         Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("/public");
+            config.staticFiles.add("/");
             config.jetty.modifyServletContextHandler(handler ->  handler.setSessionHandler(SessionConfig.sessionConfig()));
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7070);
 
+        // Mappers
+        OrdersMapper.setConnectionPool(connectionPool);
+        BottomsMapper.setConnectionPool(connectionPool);
+        ToppingsMapper.setConnectionPool(connectionPool);
+
         // Routing
+        OrderController.routes(app);
 
         app.get("/", ctx ->  ctx.render("index.html"));
         app.get("/signup", ctx ->  SignupController.SignupGet(ctx));
