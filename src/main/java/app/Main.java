@@ -12,7 +12,6 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 import java.util.logging.Logger;
 
 public class Main {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
