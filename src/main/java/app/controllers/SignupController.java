@@ -15,7 +15,7 @@ public class SignupController {
     }
 
     public static void SignupGet(@NotNull Context ctx) {
-        ctx.render("createUser.html");
+        ctx.render("signup.html");
     }
 
     public static void SignupPost(@NotNull Context ctx) {
@@ -24,14 +24,17 @@ public class SignupController {
         //todo: default value for credit
         User user = new User(email,password,null,200);
         try{
-            user = UsersMapper.addUserByObject(user);
-            ctx.sessionAttribute("user", user);
-            ctx.redirect("/");
+            if(UsersMapper.getUserByEmail(email) == null){
+                user = UsersMapper.addUserByObject(user);
+                ctx.sessionAttribute("user", user);
+                ctx.redirect("/");
+                return;
+            }
         }
         catch (DatabaseException ex){
             ex.printStackTrace();
-            ctx.attribute("error","signup failed");
-            ctx.render("createUser.html");
         }
+        ctx.attribute("error","signup failed");
+        ctx.render("signup.html");
     }
 }
