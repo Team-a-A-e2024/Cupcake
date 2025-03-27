@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.models.User;
+import app.entities.User;
 import app.persistence.ConnectionPool;
 import app.persistence.UsersMapper;
 import io.javalin.Javalin;

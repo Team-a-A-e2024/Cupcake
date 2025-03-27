@@ -1,7 +1,7 @@
 package app.persistence;
 
 import app.exceptions.DatabaseException;
-import app.models.User;
+import app.entities.User;
 import org.junit.jupiter.api.*;
 import app.test.SetupDatabase;
 

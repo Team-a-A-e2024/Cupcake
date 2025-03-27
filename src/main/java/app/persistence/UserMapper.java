@@ -1,6 +1,6 @@
 package app.persistence;
 
-import app.models.User;
+import app.entities.User;
 import java.sql.*;
 
 public class UserMapper {

@@ -4,7 +4,7 @@ import app.entities.Bottom;
 import app.entities.Order;
 import app.entities.Topping;
 import app.exceptions.DatabaseException;
-import app.models.User;
+import app.entities.User;
 import app.persistence.BottomsMapper;
 import app.persistence.OrdersMapper;
 import app.persistence.ToppingsMapper;
