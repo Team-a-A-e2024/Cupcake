@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Frontpage</title>
+<title>Signup</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 
 <body>
+
 <!--insert static across page header here-->
 
-<div>
-    <h1>Velkommen ombord</h1>
-    <h2>Øens bedste cupcakes</h2>
-
-    <p class="splashtext">sign up:</p>
-    <form class="signup-user" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="email">email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-
-        <button class="button" type="submit" formaction="/signup">login</button>
-    </form>
-    <div class="successstate" th:text="${success.string}"></div>
+<!-- Show email -->
+<div th:if="${email != null}">
+    <p>Currently Logged in as: <strong th:text="${email}">[email]</strong></p>
+    <a href="/logout">Log out</a>
 </div>
 
-
+<!-- Show login form if user is NOT logged in -->
+<div th:if="${email == null}">
+    <h2>Signup</h2>
+    <form action="/signup" method="post">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Signup</button>
+    </form>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+</div>
 </body>
 </html>

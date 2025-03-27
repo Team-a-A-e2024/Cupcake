@@ -27,9 +27,10 @@ public class OrderController {
         User user = ctx.sessionAttribute("user");
         if (user == null) {
             ctx.attribute("email", "");
-            return;
+
+        } else {
+            ctx.attribute("email", user.getEmail());
         }
-        ctx.attribute("email", user.getEmail());
         ctx.render("index.html");
     }
 
