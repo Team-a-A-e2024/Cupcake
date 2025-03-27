@@ -5,8 +5,8 @@ import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class OrdersMapper {
         }
     }
 
-    public List<Order> getUnprocessedOrders(ConnectionPool connectionPool, int userId) throws DatabaseException {
+    public static List<Order> getUnprocessedOrdersByUserId(int userId) throws DatabaseException {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE user_id = ? AND is_processed = false";
 
@@ -73,7 +73,7 @@ public class OrdersMapper {
 
             }
         } catch (SQLException e) {
-            throw new DatabaseException(e, "Could not get orders from database");
+            throw new DatabaseException(e.getMessage());
         }
         return orders;
     }

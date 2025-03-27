@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Basket</title>
+</head>
+<body>
+
+<h1>Indkøbskurv</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Topping</th>
+        <th>Bund</th>
+        <th>Antal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="basketItem : ${basket}">
+        <td th:text="${basketItem.topping}">topping</td>
+        <td th:text="${basketItem.bottom}">bottom</td>
+        <td th:text="${basketItem.amount}">amount</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
