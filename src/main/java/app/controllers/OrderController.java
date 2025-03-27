@@ -24,7 +24,6 @@ public class OrderController {
         getBottoms(ctx);
         getToppings(ctx);
         getAmount(ctx);
-        ctx.render("index.html");
         User user = ctx.sessionAttribute("user");
         if (user == null) {
             ctx.attribute("email", "");

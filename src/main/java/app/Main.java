@@ -2,7 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
-import app.controller.LoginController;
+import app.controllers.LoginController;
 import app.controllers.SignupController;
 import app.controllers.OrderController;
 import app.persistence.*;
