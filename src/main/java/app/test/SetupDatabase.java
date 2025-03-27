@@ -3,7 +3,7 @@ package app.test;
 import app.exceptions.DatabaseException;
 import app.persistence.BottomsMapper;
 import app.persistence.ConnectionPool;
-import app.persistence.UserMapper;
+import app.persistence.UsersMapper;
 import app.persistence.OrdersMapper;
 import app.persistence.ToppingsMapper;
 
@@ -27,7 +27,7 @@ public class SetupDatabase {
         BottomsMapper.setConnectionPool(connectionPool);
         ToppingsMapper.setConnectionPool(connectionPool);
         OrdersMapper.setConnectionPool(connectionPool);
-        UserMapper.setConnectionPool(connectionPool);
+        UsersMapper.setConnectionPool(connectionPool);
 
         try {
             Connection connection = connectionPool.getConnection();

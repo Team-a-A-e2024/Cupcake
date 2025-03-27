@@ -46,5 +46,32 @@ public class UsersMapper {
             throw new DatabaseException(e.getMessage());
         }
     }
+    public static app.models.User getUserByEmailAndPassword(String email, String password) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new app.models.User(
+                        rs.getInt("id"),
+                        rs.getString("role"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getDouble("credit")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

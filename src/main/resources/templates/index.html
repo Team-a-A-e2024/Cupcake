@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns="">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <title>Olskers Cupcakes</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,10 +33,15 @@
                 <a href="#orders">Ordrer</a>
                 <a href="#customers">Kunder</a>
             </div>
-
             <li class="menu-item desktop"><a href="#orders">Ordrer</a></li>
             <li class="menu-item desktop"><a href="#customers">Kunder</a></li>
-            <li class="right-align-nav"><a href="" id="log-in-button">log ind</a></li>
+            <li class="right-align-nav" th:if="${email == null}">
+                <a th:href="@{/login}" id="log-in-button">Log ind</a>
+            </li>
+            <li class="right-align-nav" th:if="${email != null}">
+                <span th:text="${email}"></span>
+                <a th:href="@{/logout}">Log ud</a>
+            </li>
             <li><a href=""><img id="basket" src="../public/images/basket.png"></a></li>
         </ul>
     </nav>

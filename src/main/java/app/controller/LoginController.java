@@ -2,7 +2,7 @@ package app.controller;
 
 import app.models.User;
 import app.persistence.ConnectionPool;
-import app.persistence.UserMapper;
+import app.persistence.UsersMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -32,11 +32,11 @@ public class LoginController {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
 
-        User user = UserMapper.getUserByEmailAndPassword(email, password, connectionPool);
+        User user = UsersMapper.getUserByEmailAndPassword(email, password);
 
         if (user != null) {
             ctx.sessionAttribute("user", user);
-            ctx.redirect("/login");
+            ctx.redirect("/index");
         } else {
             ctx.attribute("error", "Invalid email or password");
             ctx.render("login.html");
