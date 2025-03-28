@@ -36,7 +36,7 @@ public class UsersMapper {
                         );
                     }
                     else {
-                        throw new DatabaseException("Failed to place order");
+                        throw new DatabaseException("Failed to insert user");
                     }
                 }
             }
@@ -46,7 +46,7 @@ public class UsersMapper {
             throw new DatabaseException(e.getMessage());
         }
     }
-    public static app.models.User getUserByEmailAndPassword(String email, String password) {
+    public static User getUserByEmailAndPassword(String email, String password) throws DatabaseException{
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 
         try (Connection conn = connectionPool.getConnection();
@@ -58,17 +58,46 @@ public class UsersMapper {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new app.models.User(
+                return new User(
                         rs.getInt("id"),
-                        rs.getString("role"),
                         rs.getString("email"),
                         rs.getString("password"),
+                        rs.getString("role"),
                         rs.getDouble("credit")
                 );
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static User getUserByEmail(String email) throws DatabaseException{
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role"),
+                        rs.getDouble("credit")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
         }
 
         return null;

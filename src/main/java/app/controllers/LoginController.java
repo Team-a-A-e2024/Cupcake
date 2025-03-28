@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.models.User;
+import app.entities.User;
 import app.persistence.ConnectionPool;
 import app.persistence.UsersMapper;
 import io.javalin.Javalin;
@@ -32,15 +32,18 @@ public class LoginController {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
 
-        User user = UsersMapper.getUserByEmailAndPassword(email, password);
-
-        if (user != null) {
-            ctx.sessionAttribute("user", user);
-            ctx.redirect("/");
-        } else {
-            ctx.attribute("error", "Invalid email or password");
-            ctx.render("login.html");
+        try{
+            User user = UsersMapper.getUserByEmailAndPassword(email, password);
+            if (user != null) {
+                ctx.sessionAttribute("user", user);
+                ctx.redirect("/");
+                return;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        ctx.attribute("error", "Invalid email or password");
+        ctx.render("login.html");
     }
 
     public static void logout(Context ctx) {
