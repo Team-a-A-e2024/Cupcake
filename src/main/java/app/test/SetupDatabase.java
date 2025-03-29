@@ -1,7 +1,11 @@
 package app.test;
 
 import app.exceptions.DatabaseException;
-import app.persistence.*;
+import app.persistence.BottomsMapper;
+import app.persistence.ConnectionPool;
+import app.persistence.UsersMapper;
+import app.persistence.OrdersMapper;
+import app.persistence.ToppingsMapper;
 
 import java.sql.Connection;
 import java.sql.SQLException;

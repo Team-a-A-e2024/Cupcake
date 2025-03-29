@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.misc.StringToThymeleaf;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +15,7 @@ public class SignupController {
     }
 
     public static void SignupGet(@NotNull Context ctx) {
-        ctx.attribute("success",new StringToThymeleaf(""));
-        ctx.render("createUser.html");
+        ctx.render("signup.html");
     }
 
     public static void SignupPost(@NotNull Context ctx) {
@@ -26,14 +24,17 @@ public class SignupController {
         //todo: default value for credit
         User user = new User(email,password,null,200);
         try{
-            UsersMapper.addUserByObject(user);
+            if(UsersMapper.getUserByEmail(email) == null){
+                user = UsersMapper.addUserByObject(user);
+                ctx.sessionAttribute("user", user);
+                ctx.redirect("/");
+                return;
+            }
         }
         catch (DatabaseException ex){
             ex.printStackTrace();
-            ctx.attribute("success",new StringToThymeleaf("signup failed"));
-            ctx.render("createUser.html");
         }
-        ctx.attribute("success",new StringToThymeleaf("signup successful"));
-        ctx.render("createUser.html");
+        ctx.attribute("error","signup failed");
+        ctx.render("signup.html");
     }
 }

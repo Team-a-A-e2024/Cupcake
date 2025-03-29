@@ -149,7 +149,7 @@ select {
     display: block;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 544px) {
     html, body {
         margin: 0;
         padding: 5px;
@@ -283,4 +283,13 @@ select {
         width: 38px;
         aspect-ratio: 1;
     }
+    .right-align-nav{
+        font-size: 14px;
+
+    }
+    .right-align-nav>a{
+        font-size: 8px;
+
+    }
+
 }

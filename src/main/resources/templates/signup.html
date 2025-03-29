@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Signup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!--insert static across page header here-->
+
+<!-- Show email -->
+<div th:if="${email != null}">
+    <p>Currently Logged in as: <strong th:text="${email}">[email]</strong></p>
+    <a href="/logout">Log out</a>
+</div>
+
+<!-- Show login form if user is NOT logged in -->
+<div th:if="${email == null}">
+    <h2>Signup</h2>
+    <form action="/signup" method="post">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Signup</button>
+    </form>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+</div>
+
+<div>
+    <a href="/login">har du allerede en konto? klik her.</a>
+</div>
+
+</body>
+</html>

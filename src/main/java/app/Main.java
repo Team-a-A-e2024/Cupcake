@@ -2,6 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.LoginController;
 import app.controllers.SignupController;
 import app.controllers.OrderController;
 import app.persistence.*;
@@ -9,6 +10,7 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
 public class Main {
+
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
@@ -34,7 +36,7 @@ public class Main {
 
         // Routing
         OrderController.routes(app);
+        LoginController.routes(app);
         SignupController.routes(app);
-
     }
 }
