@@ -2,9 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
-import app.controllers.LoginController;
-import app.controllers.SignupController;
-import app.controllers.OrderController;
+import app.controllers.*;
 import app.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -35,8 +33,10 @@ public class Main {
         UsersMapper.setConnectionPool(connectionPool);
 
         // Routing
+        HomeController.routes(app);
         OrderController.routes(app);
         LoginController.routes(app);
         SignupController.routes(app);
+        AdminController.routes(app);
     }
 }
