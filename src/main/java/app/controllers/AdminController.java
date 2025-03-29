@@ -1,13 +1,13 @@
 package app.controllers;
 
 import app.entities.Order;
+import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.OrdersMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.util.List;
-import java.util.Map;
 
 public class AdminController {
 
@@ -16,8 +16,16 @@ public class AdminController {
     }
 
     private static void displayOrders(Context ctx) throws DatabaseException {
+        User user = ctx.sessionAttribute("user");
+
         List<Order> orders = OrdersMapper.getOrders();
-        ctx.attribute("orders", orders);
-        ctx.status(200).result(orders.toString());
+        if (user != null && user.getRole().equals("admin")) {
+            ctx.attribute("email", user.getEmail());
+            ctx.attribute("orders", orders);
+            ctx.render("admin.html");
+        }
+        else {
+            ctx.status(401).result("Authentication failed");
+        }
     }
 }

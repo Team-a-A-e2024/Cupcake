@@ -16,22 +16,7 @@ import java.util.List;
 public class OrderController {
 
     public static void routes(Javalin app) {
-        app.get("/", OrderController::displayFrontpage);
         app.post("/order/create", OrderController::createOrder);
-    }
-
-    private static void displayFrontpage(Context ctx) throws DatabaseException {
-        getBottoms(ctx);
-        getToppings(ctx);
-        getAmount(ctx);
-        User user = ctx.sessionAttribute("user");
-        if (user == null) {
-            ctx.attribute("email", "");
-
-        } else {
-            ctx.attribute("email", user.getEmail());
-        }
-        ctx.render("index.html");
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
@@ -44,20 +29,20 @@ public class OrderController {
         Order order = new Order(userId, topping, bottom, amount, false);
         OrdersMapper.createOrder(order);
         ctx.status(200);
-        displayFrontpage(ctx);
+        HomeController.displayFrontpage(ctx);
     }
 
-    private static void getBottoms(Context ctx) throws DatabaseException {
+    public static void getBottoms(Context ctx) throws DatabaseException {
         List<Bottom> bottoms = BottomsMapper.getBottoms();
         ctx.attribute("bottomTypes", bottoms);
     }
 
-    private static void getToppings(Context ctx) throws DatabaseException {
+    public static void getToppings(Context ctx) throws DatabaseException {
         List<Topping> toppings = ToppingsMapper.getToppings();
         ctx.attribute("toppingTypes", toppings);
     }
 
-    private static void getAmount(Context ctx) {
+    public static void getAmount(Context ctx) {
         int amountLimit = 100;
         int[] amount = new int[amountLimit];
         for (int i = 0; i < amount.length; i++) {

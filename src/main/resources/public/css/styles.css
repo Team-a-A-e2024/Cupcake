@@ -149,6 +149,24 @@ select {
     display: block;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+}
+
+th, td {
+    border-bottom: 1px solid #999999;
+    padding: 10px;
+}
+
+tbody tr:hover {
+    background-color: #D9D9D9;
+}
+
 @media (max-width: 544px) {
     html, body {
         margin: 0;
