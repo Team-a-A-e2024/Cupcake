@@ -49,35 +49,42 @@
     </nav>
 
     <div id="main-content">
-        <h1>Velkommen ombord</h1>
-        <h2 class="desktop">Øens bedste cupcakes. Vælg og bestil her:</h2>
-        <h2 class="mobile center-text">Øens bedste cupcakes.</h2>
-        <br class="mobile">
-        <h3 class="mobile center-text">Vælg og bestil her:</h3>
-        <form method="post" enctype="multipart/form-data">
-            <div class="cupcake-form">
-                <label for="bottom">Vælg bund</label>
-                <select name="bottom" id="bottom">
-                    <option value="" disabled selected>Vælg bund</option>
-                    <option th:each="bottom : ${bottomTypes}" th:value="${bottom.bottom}"
-                            th:text="${bottom.bottom} + ' ' + ${bottom.price} + ' kr.'"></option>
-                </select>
-
-                <label for="topping">Vælg topping</label>
-                <select name="topping" id="topping">
-                    <option value="" disabled selected>Vælg toppping</option>
-                    <option th:each="topping : ${toppingTypes}" th:value="${topping.topping}"
-                            th:text="${topping.topping} + ' ' + ${topping.price} + ' kr.'"></option>
-                </select>
-
-                <label for="amount">Vælg antal</label>
-                <select name="amount" id="amount">
-                    <option value="" disabled selected>Vælg antal</option>
-                    <option th:each="amount : ${amounts}" th:value="${amount}" th:text="${amount}"></option>
-                </select>
-            </div>
-            <button type="submit" formaction="/order/create" id="add-to-basket-button">Læg i kurv</button>
-        </form>
+        <h1>Alle kunder</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Bruger ID</th>
+                <th>Email</th>
+                <th>Konto</th>
+                <th>Ordre ID</th>
+                <th>Topping</th>
+                <th>Bund</th>
+                <th>Antal</th>
+                <th>Betalt</th>
+            </tr>
+            </thead>
+            <tbody>
+            <span th:each="user : ${users}">
+                <tr th:each="order : ${user.getOrders()}">
+                    <td th:text="${user.id}">Bruger ID</td>
+                    <td th:text="${user.email}">Email</td>
+                    <td th:text="${user.credit}">Konto</td>
+                    <td th:text="${order.id}">Ordre ID</td>
+                    <td th:text="${order.topping}">Topping</td>
+                    <td th:text="${order.bottom}">Bund</td>
+                    <td th:text="${order.amount}">Antal</td>
+                    <td th:if="${order.isProcessed}">
+                        <label for="checked"></label>
+                        <input type="checkbox" id="checked" checked disabled>
+                    </td>
+                    <td th:if="not ${order.isProcessed}">
+                        <label for="unchecked"></label>
+                        <input type="checkbox" id="unchecked" disabled>
+                    </td>
+                </tr>
+            </span>
+            </tbody>
+        </table>
     </div>
 </div>
 <footer></footer>

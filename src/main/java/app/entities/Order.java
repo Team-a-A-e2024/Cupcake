@@ -91,7 +91,12 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;
-        return id == order.id && userId == order.userId && amount == order.amount && isProcessed == order.isProcessed && Objects.equals(topping, order.topping) && Objects.equals(bottom, order.bottom);
+        return id == order.id
+                && userId == order.userId
+                && amount == order.amount
+                && isProcessed == order.isProcessed
+                && Objects.equals(topping, order.topping)
+                && Objects.equals(bottom, order.bottom);
     }
 
     @Override
