@@ -7,6 +7,8 @@ import org.junit.jupiter.api.*;
 import app.test.SetupDatabase;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,5 +105,29 @@ class UsersMapperTest {
         User user = UsersMapper.getUserByEmailAndPassword(email, password);
 
         assertNull(user);
+    }
+
+    @Test
+    void getUsersAndOrders() throws DatabaseException {
+        List<User> expected = new ArrayList<>();
+        expected.add(new User(1, "admin@olsker.dk", 999999999, new ArrayList<>()));
+        expected.add(new User(2, "cph-ab632@cphbusiness.dk", 0, new ArrayList<>()));
+        expected.add(new User(3, "cph-ea178@cphbusiness.dk", 0, new ArrayList<>()));
+        expected.add(new User(4, "cph-fb157@cphbusiness.dk", 0, new ArrayList<>()));
+        expected.add(new User(5, "cph-ta241@cphbusiness.dk", 0, new ArrayList<>()));
+        expected.get(0).addOrder(new Order(1, 1, "Chocolate", "Chocolate", 1, false));
+        expected.get(0).addOrder(new Order(2, 1, "Blueberry", "Vanilla", 1, true));
+        expected.get(1).addOrder(new Order(3, 2, "Raspberry", "Nutmeg", 1, false));
+        expected.get(1).addOrder(new Order(4, 2, "Crispy", "Pistacio", 1, true));
+        expected.get(2).addOrder(new Order(5, 3, "Strawberry", "Almond", 1, false));
+        expected.get(2).addOrder(new Order(6, 3, "Rum/Raisin", "Chocolate", 1, true));
+        expected.get(3).addOrder(new Order(7, 4, "Orange", "Vanilla", 1, false));
+        expected.get(3).addOrder(new Order(8, 4, "Lemon", "Nutmeg", 1, true));
+        expected.get(4).addOrder(new Order(9, 5, "Blue cheese", "Pistacio", 1, false));
+        expected.get(4).addOrder(new Order(10, 5, "Chocolate", "Almond", 1, true));
+
+        List<User> actual = UsersMapper.getUsersAndOrders();
+
+        assertEquals(expected, actual);
     }
 }
