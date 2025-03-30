@@ -55,6 +55,6 @@ public class OrderController {
     public static void deleteOrder(Context ctx) throws DatabaseException {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
         OrdersMapper.removeOrderById(orderId);
-        AdminController.displayOrders(ctx);
+        ctx.redirect("/admin/orders");
     }
 }
