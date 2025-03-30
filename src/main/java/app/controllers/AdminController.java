@@ -17,7 +17,7 @@ public class AdminController {
         app.get("/admin/customers", AdminController::displayCustomers);
     }
 
-    private static void displayOrders(Context ctx) throws DatabaseException {
+    public static void displayOrders(Context ctx) throws DatabaseException {
         User user = ctx.sessionAttribute("user");
 
         List<Order> orders = OrdersMapper.getOrders();

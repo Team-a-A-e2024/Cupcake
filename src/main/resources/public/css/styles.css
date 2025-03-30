@@ -52,7 +52,7 @@ ul li {
     margin-right: 1rem;
 }
 
-#log-in-button {
+#log-in-button, button {
     color: #FFFFFF;
     background-color: #37195D;
     padding: 0.5rem 0.7rem 0.5rem 0.7rem;

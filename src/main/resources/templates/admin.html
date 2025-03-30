@@ -59,6 +59,7 @@
                 <th>Bund</th>
                 <th>Antal</th>
                 <th>Betalt</th>
+                <th>Slet ordre</th>
             </tr>
             </thead>
             <tbody>
@@ -75,6 +76,11 @@
                 <td th:if="not ${order.isProcessed}">
                     <label for="unchecked"></label>
                     <input type="checkbox" id="unchecked" disabled>
+                </td>
+                <td>
+                    <form method="post">
+                        <button type="submit" th:formaction="@{/order/delete/{id}(id=${order.id})}">Slet</button>
+                    </form>
                 </td>
             </tr>
             </tbody>

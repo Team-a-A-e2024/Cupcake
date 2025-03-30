@@ -17,6 +17,7 @@ public class OrderController {
 
     public static void routes(Javalin app) {
         app.post("/order/create", OrderController::createOrder);
+        app.post("/order/delete/{id}", OrderController::deleteOrder);
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
@@ -49,5 +50,11 @@ public class OrderController {
             amount[i] = i + 1;
         }
         ctx.attribute("amounts", amount);
+    }
+
+    public static void deleteOrder(Context ctx) throws DatabaseException {
+        int orderId = Integer.parseInt(ctx.pathParam("id"));
+        OrdersMapper.removeOrderById(orderId);
+        AdminController.displayOrders(ctx);
     }
 }

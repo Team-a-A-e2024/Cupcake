@@ -70,4 +70,10 @@ class OrdersMapperTest {
 
         assertEquals(orders, OrdersMapper.getOrders());
     }
+
+    @Test
+    void removeOrder() throws DatabaseException {
+        assertTrue(OrdersMapper.removeOrderById(1));
+        assertFalse(OrdersMapper.removeOrderById(1));
+    }
 }
