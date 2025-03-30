@@ -1,9 +1,12 @@
 package app.persistence;
 
+import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersMapper {
     private static ConnectionPool connectionPool;
@@ -103,4 +106,46 @@ public class UsersMapper {
         return null;
     }
 
+    public static List<User> getUsersAndOrders() throws DatabaseException {
+        String sql = "SELECT u.email, u.credit, o.* " +
+                "FROM users u " +
+                "INNER JOIN orders o " +
+                "ON o.user_id = u.id;";
+        List<User> users = new ArrayList<>();
+        User user = null;
+
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (user == null || rs.getInt("user_id") != user.getId()) {
+                    user = new User(
+                            rs.getInt("user_id"),
+                            rs.getString("email"),
+                            rs.getDouble("credit"),
+                            new ArrayList<>()
+                    );
+
+                    users.add(user);
+                }
+
+                user.addOrder(new Order(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("topping"),
+                        rs.getString("bottom"),
+                        rs.getInt("amount"),
+                        rs.getBoolean("is_processed")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return users;
+    }
 }
