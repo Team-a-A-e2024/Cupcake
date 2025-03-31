@@ -133,7 +133,6 @@ class UsersMapperTest {
 
     @Test
     void updateUserCredit(){
-
     }
 
 }
