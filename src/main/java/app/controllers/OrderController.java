@@ -3,11 +3,12 @@ package app.controllers;
 import app.entities.Bottom;
 import app.entities.Order;
 import app.entities.Topping;
-import app.exceptions.DatabaseException;
 import app.entities.User;
+import app.exceptions.DatabaseException;
 import app.persistence.BottomsMapper;
 import app.persistence.OrdersMapper;
 import app.persistence.ToppingsMapper;
+import app.persistence.UsersMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -18,7 +19,9 @@ public class OrderController {
     public static void routes(Javalin app) {
         app.post("/order/create", OrderController::createOrder);
         app.get("/order/basket", OrderController::getBasket);
-        app.post("/order/delete/{id}", OrderController::deleteOrder);
+        app.post("/order/delete/{id}", OrderController::deleteAdminOrder);
+        app.post("/basket/delete/{id}", OrderController::deleteUserOrder);
+        app.post("/basket/checkout/", OrderController::payOrder);
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
@@ -27,6 +30,10 @@ public class OrderController {
         int amount = Integer.parseInt(ctx.formParam("amount"));
 
         User user = ctx.sessionAttribute("user");
+        if (user == null) {
+            ctx.redirect("/login");
+            return;
+        }
         int userId = user.getId();
         Order order = new Order(userId, topping, bottom, amount, false);
         OrdersMapper.createOrder(order);
@@ -61,13 +68,56 @@ public class OrderController {
         }
         int userId = user.getId();
         List<Order> orders = OrdersMapper.getOrdersWithPrice(userId);
+        double price = 0;
+        for (Order o : orders) {
+            price += o.getPrice() * o.getAmount();
+        }
+        ctx.attribute("email", user.getEmail());
+        ctx.attribute("role", user.getRole());
+        ctx.attribute("totalPrice", price);
         ctx.attribute("basket", orders);
         ctx.render("basket.html");
     }
 
-    private static void deleteOrder(Context ctx) throws DatabaseException {
+    private static void deleteAdminOrder(Context ctx) throws DatabaseException {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
         OrdersMapper.removeOrderById(orderId);
         ctx.redirect("/admin/orders");
+    }
+
+    private static void deleteUserOrder(Context ctx) throws DatabaseException {
+        int orderId = Integer.parseInt(ctx.pathParam("id"));
+        OrdersMapper.removeOrderById(orderId);
+        ctx.redirect("/order/basket");
+    }
+
+    private static void payOrder(Context ctx) throws DatabaseException {
+        User user = ctx.sessionAttribute("user");
+        if (user == null) {
+            ctx.redirect("/login");
+            return;
+        }
+        int userId = user.getId();
+        List<Order> orders = OrdersMapper.getOrdersWithPrice(userId);
+        double price = 0;
+        for (Order o : orders) {
+            price += o.getPrice() * o.getAmount();
+        }
+        if(price - user.getCredit() > 0){
+            ctx.attribute("email", user.getEmail());
+            ctx.attribute("role", user.getRole());
+            ctx.attribute("errorMessage", "Du har ikke nok penge på kontoen");
+            ctx.attribute("totalPrice", price);
+            ctx.attribute("basket", orders);
+            ctx.render("basket.html");
+            return;
+        }
+        for (Order o : orders) {
+            OrdersMapper.updateProcessStatus(true, o.getId());
+        }
+        user.setCredit(user.getCredit() - price);
+        ctx.sessionAttribute("user", user);
+        UsersMapper.updateUserCredit(user);
+        ctx.redirect("/");
     }
 }

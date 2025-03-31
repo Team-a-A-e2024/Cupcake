@@ -26,16 +26,16 @@
             <li class="mobile topnav" id="burger-menu">
                 <button class="burger-menu-button" onclick="expandMenu()">
                     <img id="menu-button" src="../public/images/burger_menu.svg" alt="Menu button">
-                    <img id="dropdown-button" class="show" src="../public/images/dropdown_button.svg" alt="Dropdown button">
+                    <img id="dropdown-button" class="show" src="../public/images/dropdown_button.svg" alt="Menu button">
                 </button>
             </li>
 
             <div id="myLinks">
-                <a th:href="@{/orders}" th:if="${role == null}">Ordrer</a>
+                <a href="#orders" th:if="${role == null}">Ordrer</a>
                 <a th:href="@{/admin/orders}" th:if="${role == 'admin'}">Ordrer</a>
                 <a th:href="@{/admin/customers}" th:if="${role == 'admin'}">Kunder</a>
             </div>
-            <li class="menu-item desktop" th:if="${role == null}"><a th:href="@{/orders}">Ordrer</a></li>
+            <li class="menu-item desktop" th:if="${role == null}"><a href="#orders">Ordrer</a></li>
             <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/orders}">Ordrer</a></li>
             <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/customers}">Kunder</a></li>
             <li class="right-align-nav" th:if="${email == null}">
@@ -45,7 +45,7 @@
                 <span th:text="${email}"></span>
                 <a th:href="@{/logout}">Log ud</a>
             </li>
-            <li><a href=""><img id="basket" src="../public/images/basket.png" alt="Indkøbskurv ikon"></a></li>
+            <li><a href="/order/basket"><img id="basket" src="../public/images/basket.png"></a></li>
         </ul>
     </nav>
 
@@ -72,7 +72,11 @@
                 </td>
                 <td>
                     <span th:text="${order.price * order.amount}"></span> kr
-
+                </td>
+                <td>
+                    <form method="post">
+                        <button type="submit" th:formaction="@{/basket/delete/{id}(id=${order.id})}">Slet</button>
+                    </form>
                 </td>
             </tr>
             </tbody>
@@ -86,8 +90,11 @@
             <form th:action="@{/basket/checkout}" method="post">
                 <button type="submit" class="pay-button">Betal</button>
             </form>
-        </div>
 
+            <p class="errorMessage" th:if="${errorMessage != null}" th:text="${errorMessage}">
+            </p>
+
+        </div>
     </div>
 </div>
 <footer></footer>

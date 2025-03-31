@@ -98,7 +98,7 @@ public class OrdersMapper {
                 "FROM orders o \n" +
                 "JOIN bottoms b ON o.bottom = b.bottom\n" +
                 "JOIN toppings t ON o.topping = t.topping\n" +
-                "WHERE user_id = 1 AND is_processed = false";
+                "WHERE user_id = ? AND is_processed = false";
 
 
         try (
@@ -140,4 +140,25 @@ public class OrdersMapper {
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static void updateProcessStatus(boolean processedStatus, int id) throws DatabaseException {
+        String sql = "UPDATE orders SET is_processed = ? WHERE id = ?;";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setBoolean(1, processedStatus);
+            ps.setInt(2, id);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DatabaseException("Could not update the processed status in orders");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
 }

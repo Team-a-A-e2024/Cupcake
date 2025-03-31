@@ -311,29 +311,6 @@ tbody tr:hover {
 
     }
 
-    .pay-section {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 1.5rem;
-        padding-right: 1rem;
-    }
-
-    .pay-button {
-        background-color: #7435c3; /* MATCH login farve */
-        color: white;
-        padding: 0.6rem 1.4rem;
-        font-size: 1rem;
-        font-weight: bold;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .pay-button:hover {
-        background-color: #5e28a1; /* Lidt mørkere til hover */
-    }
-
 }
 /* ==== Authentication Styling ==== */
 .auth-form-wrapper {
@@ -420,5 +397,38 @@ tbody tr:hover {
 }
 
 .logged-in-info a:hover {
+    background-color: #37195D;
+}
+
+.total {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* Placerer teksten helt til højre */
+    padding-right: 7rem; /* Juster dette tal efter behov */
+    margin-top: 0.5rem; /* Afstand opad */
+    font-weight: bold;
+}
+
+
+.pay-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-right: 1rem;
+}
+
+.pay-button {
+    background-color: #37195D;
+    color: white;
+    padding: 0.6rem 1.4rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pay-button:hover {
     background-color: #7435c3;
 }

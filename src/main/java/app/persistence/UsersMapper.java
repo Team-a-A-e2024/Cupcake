@@ -148,4 +148,24 @@ public class UsersMapper {
 
         return users;
     }
+
+    public static void updateUserCredit(User user) throws DatabaseException {
+        String sql = "UPDATE users SET credit = ? WHERE id = ?;";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setDouble(1, user.getCredit());
+            ps.setInt(2, user.getId());
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DatabaseException("Could not update the credit in users");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

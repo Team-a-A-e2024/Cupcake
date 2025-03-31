@@ -130,4 +130,10 @@ class UsersMapperTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    void updateUserCredit(){
+
+    }
+
 }
