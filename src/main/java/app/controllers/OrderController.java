@@ -52,7 +52,7 @@ public class OrderController {
         ctx.attribute("amounts", amount);
     }
 
-    public static void deleteOrder(Context ctx) throws DatabaseException {
+    private static void deleteOrder(Context ctx) throws DatabaseException {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
         OrdersMapper.removeOrderById(orderId);
         ctx.redirect("/admin/orders");
