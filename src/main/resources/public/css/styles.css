@@ -57,6 +57,7 @@ ul li {
     background-color: #37195D;
     padding: 0.5rem 0.7rem 0.5rem 0.7rem;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #main-content {
