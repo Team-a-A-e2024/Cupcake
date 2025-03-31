@@ -3,8 +3,11 @@ package app.controllers;
 import app.entities.User;
 import app.persistence.ConnectionPool;
 import app.persistence.UsersMapper;
+import app.util.PasswordUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.Objects;
 
 public class LoginController {
 
@@ -33,8 +36,8 @@ public class LoginController {
         String password = ctx.formParam("password");
 
         try{
-            User user = UsersMapper.getUserByEmailAndPassword(email, password);
-            if (user != null) {
+            User user = UsersMapper.getUserByEmail(email);
+            if (user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
                 ctx.sessionAttribute("user", user);
                 ctx.redirect("/");
                 return;
