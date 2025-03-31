@@ -103,7 +103,7 @@ public class OrderController {
         for (Order o : orders) {
             price += o.getPrice() * o.getAmount();
         }
-        if(price - user.getCredit() > 0){
+        if(price - user.getCredit() >= 0){
             ctx.attribute("email", user.getEmail());
             ctx.attribute("role", user.getRole());
             ctx.attribute("errorMessage", "Du har ikke nok penge på kontoen");

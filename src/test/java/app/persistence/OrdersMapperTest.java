@@ -76,4 +76,36 @@ class OrdersMapperTest {
         assertTrue(OrdersMapper.removeOrderById(1));
         assertFalse(OrdersMapper.removeOrderById(1));
     }
+
+    @Test
+    void getUnprocessedOrders() throws DatabaseException {
+        int userId = 1;
+        List<Order> expected = new ArrayList<>();
+
+        expected.add(new Order(1, userId, "Chocolate", "Chocolate", 1, false));
+        List<Order> actual = OrdersMapper.getUnprocessedOrders(userId);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getOrdersWithPrice()throws DatabaseException {
+        int userId = 2;
+        List<Order> expected = new ArrayList<>();
+        expected.add(new Order(3, userId, "Raspberry", "Nutmeg", 1, false, 12.5));
+
+        List<Order> actual = OrdersMapper.getOrdersWithPrice(userId);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateProcessStatusTrue() throws DatabaseException {
+        assertTrue(OrdersMapper.updateProcessStatus(true,1));
+    }
+
+    @Test
+    void updateProcessStatusFalse() throws DatabaseException {
+        assertThrows(DatabaseException.class, () -> OrdersMapper.updateProcessStatus(true,99));
+    }
 }

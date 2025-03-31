@@ -120,6 +120,6 @@ public class Order {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, topping, bottom, amount, isProcessed);
+        return Objects.hash(id, userId, topping, bottom, amount, isProcessed, price);
     }
 }
