@@ -52,11 +52,12 @@ ul li {
     margin-right: 1rem;
 }
 
-#log-in-button {
+#log-in-button, button {
     color: #FFFFFF;
     background-color: #37195D;
     padding: 0.5rem 0.7rem 0.5rem 0.7rem;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #main-content {
@@ -333,4 +334,91 @@ tbody tr:hover {
         background-color: #5e28a1; /* Lidt mørkere til hover */
     }
 
+}
+/* ==== Authentication Styling ==== */
+.auth-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.auth-form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 350px;
+    width: 100%;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.auth-form button {
+    width: 100%;
+    background-color: #37195D;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.auth-form button:hover {
+    background-color: #7435c3;
+}
+
+.auth-form a {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #37195D;
+}
+
+.auth-form .error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+.logged-in-info {
+    background-color: #f9f5ff;
+    padding: 24px;
+    margin: 32px auto;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #222;
+
+}
+
+.logged-in-info strong {
+    color: #5e2b97;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+
+.logged-in-info a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #37195D;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logged-in-info a:hover {
+    background-color: #7435c3;
 }

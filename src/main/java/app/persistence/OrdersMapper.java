@@ -126,4 +126,18 @@ public class OrdersMapper {
         return orders;
     }
 
+    public static boolean removeOrderById(int id) throws DatabaseException {
+        String sql = "DELETE FROM Orders WHERE id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }
