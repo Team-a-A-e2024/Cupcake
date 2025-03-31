@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<title>Olskers Cupcakes</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
-<script src="../public/js/scripts.js" th:href="@{/public/js/scripts.js}" rel="stylesheet"></script>
+<head>
+    <title>Olskers Cupcakes - Indkøbskurv</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
+    <script src="../public/js/scripts.js" th:src="@{/public/js/scripts.js}" defer></script>
 </head>
 <body>
 <div class="wrapper">
@@ -49,42 +50,51 @@
     </nav>
 
     <div id="main-content">
-        <h1>Alle ordrer</h1>
+        <h1>Min Indkøbskurv</h1>
+
         <table>
             <thead>
             <tr>
-                <th>Ordre ID</th>
-                <th>Bruger ID</th>
                 <th>Topping</th>
                 <th>Bund</th>
                 <th>Antal</th>
-                <th>Betalt</th>
-                <th>Slet ordre</th>
+                <th>Pris (stk)</th>
+                <th>Subtotal</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="order : ${orders}">
-                <td th:text="${order.id}">Ordre ID</td>
-                <td th:text="${order.userId}">Bruger ID</td>
+            <tr th:each="order : ${basket}">
                 <td th:text="${order.topping}">Topping</td>
                 <td th:text="${order.bottom}">Bund</td>
                 <td th:text="${order.amount}">Antal</td>
-                <td th:if="${order.isProcessed}">
-                    <label for="checked"></label>
-                    <input type="checkbox" id="checked" checked disabled>
+                <td>
+                    <span th:text="${order.price}"></span> kr
                 </td>
-                <td th:if="not ${order.isProcessed}">
-                    <label for="unchecked"></label>
-                    <input type="checkbox" id="unchecked" disabled>
+                <td>
+                    <span th:text="${order.price * order.amount}"></span> kr
                 </td>
                 <td>
                     <form method="post">
-                        <button type="submit" th:formaction="@{/order/delete/{id}(id=${order.id})}">Slet</button>
+                        <button type="submit" th:formaction="@{/basket/delete/{id}(id=${order.id})}">Slet</button>
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <div class="total">
+            <p>Samlet pris: <span th:text="${totalPrice}">0</span> kr</p>
+        </div>
+
+        <div class="pay-section">
+            <form th:action="@{/basket/checkout}" method="post">
+                <button type="submit" class="pay-button">Betal</button>
+            </form>
+
+            <p class="errorMessage" th:if="${errorMessage != null}" th:text="${errorMessage}">
+            </p>
+
+        </div>
     </div>
 </div>
 <footer></footer>

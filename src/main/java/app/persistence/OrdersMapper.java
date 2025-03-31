@@ -63,7 +63,63 @@ public class OrdersMapper {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+        return orders;
+    }
 
+    public static List<Order> getUnprocessedOrders(int userId) throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE user_id = ? AND is_processed = false";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String topping = rs.getString("topping");
+                    String bottom = rs.getString("bottom");
+                    int amount = rs.getInt("amount");
+                    boolean isProcessed = rs.getBoolean("is_processed");
+
+                    orders.add(new Order(id, userId, topping, bottom, amount, isProcessed));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+        return orders;
+    }
+
+    public static List<Order> getOrdersWithPrice(int userId) throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.*, t.topping, t.price AS topping_price, b.bottom, b.price AS bottom_price\n" +
+                "FROM orders o \n" +
+                "JOIN bottoms b ON o.bottom = b.bottom\n" +
+                "JOIN toppings t ON o.topping = t.topping\n" +
+                "WHERE user_id = ? AND is_processed = false";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+
+                String topping = rs.getString("topping");
+                String bottom = rs.getString("bottom");
+                int amount = rs.getInt("amount");
+                boolean isProcessed = rs.getBoolean("is_processed");
+                double price = rs.getDouble("topping_price");
+                price += rs.getDouble("bottom_price");
+                orders.add(new Order(id, userId, topping, bottom, amount, isProcessed, price));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
         return orders;
     }
 
@@ -78,6 +134,27 @@ public class OrdersMapper {
             return ps.executeUpdate() == 1;
 
         } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static boolean updateProcessStatus(boolean processedStatus, int id) throws DatabaseException {
+        String sql = "UPDATE orders SET is_processed = ? WHERE id = ?;";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setBoolean(1, processedStatus);
+            ps.setInt(2, id);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new DatabaseException("Could not update the processed status in orders");
+            }else return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseException(e.getMessage());
         }
     }

@@ -45,7 +45,7 @@ class UsersMapperTest {
     @Test
     void createUser() throws DatabaseException {
         // Arrange
-        User expected = new User(6,"test","test",null,100 );
+        User expected = new User(6, "test", "test", null, 100);
 
         // Act
         User actual = UsersMapper.addUserByObject(expected);
@@ -53,6 +53,7 @@ class UsersMapperTest {
         // Assert
         assertEquals(expected, actual);
     }
+
     @Test
     void getEmailValidUser() throws DatabaseException {
         String email = "cph-ab632@cphbusiness.dk";
@@ -129,5 +130,17 @@ class UsersMapperTest {
         List<User> actual = UsersMapper.getUsersAndOrders();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateUserCredit() throws DatabaseException {
+        User user = new User(1, "admin@olsker.dk", 500.0, new ArrayList<>());
+        double expectedCredit = 750.0;
+        user.setCredit(expectedCredit);
+
+        UsersMapper.updateUserCredit(user);
+        User updatedUser = UsersMapper.getUserByEmail(user.getEmail());
+
+        assertEquals(expectedCredit, updatedUser.getCredit());
     }
 }

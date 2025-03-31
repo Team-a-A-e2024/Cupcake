@@ -9,6 +9,7 @@ public class Order {
     private String bottom;
     private int amount;
     private boolean isProcessed;
+    private double price;
 
     public Order(int id, int userId, String topping, String bottom, int amount, boolean isProcessed) {
         this.id = id;
@@ -25,6 +26,16 @@ public class Order {
         this.bottom = bottom;
         this.amount = amount;
         this.isProcessed = isProcessed;
+    }
+
+    public Order(int id, int userId, String topping, String bottom, int amount, boolean isProcessed, double price) {
+        this.id = id;
+        this.userId = userId;
+        this.topping = topping;
+        this.bottom = bottom;
+        this.amount = amount;
+        this.isProcessed = isProcessed;
+        this.price = price;
     }
 
     public int getId() {
@@ -71,6 +82,14 @@ public class Order {
         return isProcessed;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public void setProcessed(boolean processed) {
         isProcessed = processed;
     }
@@ -101,6 +120,6 @@ public class Order {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, topping, bottom, amount, isProcessed);
+        return Objects.hash(id, userId, topping, bottom, amount, isProcessed, price);
     }
 }
