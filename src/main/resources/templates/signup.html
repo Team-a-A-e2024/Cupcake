@@ -1,36 +1,72 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Signup</title>
+    <title>Olskers Cupcakes - Signup</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
+    <script src="../public/js/scripts.js" th:href="@{/public/js/scripts.js}" rel="stylesheet"></script>
 </head>
 
 <body>
+<div class="wrapper">
+    <a th:href="@{/}" id="header-banner" class="desktop">
+        <div></div>
+    </a>
 
-<!--insert static across page header here-->
+    <div class="mobile" id="header-banner-mobile">
+        <img src="../public/images/logo.png" alt="Cupcake logo">
+        <div>
+            <h1 class="banner">Olskers cupcakes</h1>
+            <h2 class="banner">Mums filibaba</h2>
+        </div>
+    </div>
 
-<!-- Show email -->
-<div th:if="${email != null}">
-    <p>Currently Logged in as: <strong th:text="${email}">[email]</strong></p>
-    <a href="/logout">Log out</a>
+    <nav>
+        <ul>
+            <li class="mobile topnav" id="burger-menu">
+                <button class="burger-menu-button" onclick="expandMenu()">
+                    <img id="menu-button" src="../public/images/burger_menu.svg" alt="Menu button">
+                    <img id="dropdown-button" class="show" src="../public/images/dropdown_button.svg" alt="Menu button">
+                </button>
+            </li>
+
+            <div id="myLinks">
+                <a href="#orders" th:if="${role == null}">Ordrer</a>
+                <a th:href="@{/admin/orders}" th:if="${role == 'admin'}">Ordrer</a>
+                <a th:href="@{/admin/customers}" th:if="${role == 'admin'}">Kunder</a>
+            </div>
+            <li class="menu-item desktop" th:if="${role == null}"><a href="#orders">Ordrer</a></li>
+            <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/orders}">Ordrer</a></li>
+            <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/customers}">Kunder</a></li>
+            <li class="right-align-nav" th:if="${email == null}">
+                <a th:href="@{/login}" id="log-in-button">Log ind</a>
+            </li>
+            <li class="right-align-nav" th:if="${email != null}">
+                <span th:text="${email}"></span>
+                <a th:href="@{/logout}">Log ud</a>
+            </li>
+            <li><a href=""><img id="basket" src="../public/images/basket.png"></a></li>
+        </ul>
+    </nav>
+
+    <!-- Hvis bruger er logget ind -->
+    <div th:if="${email != null}" class="logged-in-info">
+        <p>Logged in as: <strong th:text="${email}">[email]</strong></p>
+        <a href="/logout">Log out</a>
+    </div>
+
+    <!-- Hvis bruger ikke er logget ind -->
+    <div th:if="${email == null}" class="auth-form-wrapper">
+        <form action="/signup" method="post" class="auth-form">
+            <h2>Signup</h2>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <button type="submit">Signup</button>
+            <p th:if="${error}" th:text="${error}" class="error"></p>
+            <a href="/login">Har du allerede en konto? Klik her.</a>
+        </form>
+    </div>
 </div>
-
-<!-- Show login form if user is NOT logged in -->
-<div th:if="${email == null}">
-    <h2>Signup</h2>
-    <form action="/signup" method="post">
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <button type="submit">Signup</button>
-    </form>
-    <p th:if="${error}" th:text="${error}" class="error"></p>
-</div>
-
-<div>
-    <a href="/login">har du allerede en konto? klik her.</a>
-</div>
-
 </body>
 </html>
