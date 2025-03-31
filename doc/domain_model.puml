@@ -1,0 +1,8 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+users "1" *-- "0..*" orders
+toppings "1" --o "0..*" orders
+bottoms "1" --o "0..*" orders
+
+@enduml

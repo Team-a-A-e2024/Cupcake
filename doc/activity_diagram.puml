@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+repeat
+:Place order;
+repeat while (Add more?) is (yes) not (no)
+:Show order;
+:Pay order;
+if (Has credit?) then (no)
+#pink:Error;
+detach
+endif
+#palegreen:Subtract credit from account;
+#palegreen:Update order to processed;
+stop
+@enduml
