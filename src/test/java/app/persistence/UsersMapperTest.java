@@ -3,7 +3,6 @@ package app.persistence;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.entities.User;
-import app.util.PasswordUtil;
 import org.junit.jupiter.api.*;
 import app.test.SetupDatabase;
 

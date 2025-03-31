@@ -7,8 +7,6 @@ import app.util.PasswordUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import java.util.Objects;
-
 public class LoginController {
 
     private static ConnectionPool connectionPool;
