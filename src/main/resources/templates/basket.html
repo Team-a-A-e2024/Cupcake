@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Olskers Cupcakes - Indkøbskurv</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/public/css/styles.css}" rel="stylesheet"/>
+    <script src="../public/js/scripts.js" th:src="@{/public/js/scripts.js}" defer></script>
+</head>
+<body>
+<div class="wrapper">
+    <a th:href="@{/}" id="header-banner" class="desktop">
+        <div></div>
+    </a>
+
+    <div class="mobile" id="header-banner-mobile">
+        <img src="../public/images/logo.png" alt="Cupcake logo">
+        <div>
+            <h1 class="banner">Olskers cupcakes</h1>
+            <h2 class="banner">Mums filibaba</h2>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li class="mobile topnav" id="burger-menu">
+                <button class="burger-menu-button" onclick="expandMenu()">
+                    <img id="menu-button" src="../public/images/burger_menu.svg" alt="Menu button">
+                    <img id="dropdown-button" class="show" src="../public/images/dropdown_button.svg" alt="Dropdown button">
+                </button>
+            </li>
+
+            <div id="myLinks">
+                <a th:href="@{/orders}" th:if="${role == null}">Ordrer</a>
+                <a th:href="@{/admin/orders}" th:if="${role == 'admin'}">Ordrer</a>
+                <a th:href="@{/admin/customers}" th:if="${role == 'admin'}">Kunder</a>
+            </div>
+            <li class="menu-item desktop" th:if="${role == null}"><a th:href="@{/orders}">Ordrer</a></li>
+            <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/orders}">Ordrer</a></li>
+            <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/customers}">Kunder</a></li>
+            <li class="right-align-nav" th:if="${email == null}">
+                <a th:href="@{/login}" id="log-in-button">Log ind</a>
+            </li>
+            <li class="right-align-nav" th:if="${email != null}">
+                <span th:text="${email}"></span>
+                <a th:href="@{/logout}">Log ud</a>
+            </li>
+            <li><a href=""><img id="basket" src="../public/images/basket.png" alt="Indkøbskurv ikon"></a></li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <h1>Min Indkøbskurv</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Topping</th>
+                <th>Bund</th>
+                <th>Antal</th>
+                <th>Pris (stk)</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${basket}">
+                <td th:text="${order.topping}">Topping</td>
+                <td th:text="${order.bottom}">Bund</td>
+                <td th:text="${order.amount}">Antal</td>
+                <td>
+                    <span th:text="${order.price}"></span> kr
+                </td>
+                <td>
+                    <span th:text="${order.price * order.amount}"></span> kr
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="total">
+            <p>Samlet pris: <span th:text="${totalPrice}">0</span> kr</p>
+        </div>
+
+        <div class="pay-section">
+            <form th:action="@{/basket/checkout}" method="post">
+                <button type="submit" class="pay-button">Betal</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<footer></footer>
+</body>
+</html>

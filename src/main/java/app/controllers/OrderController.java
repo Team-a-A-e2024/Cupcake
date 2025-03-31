@@ -17,6 +17,7 @@ public class OrderController {
 
     public static void routes(Javalin app) {
         app.post("/order/create", OrderController::createOrder);
+        app.get("/order/basket", OrderController::getBasket);
     }
 
     private static void createOrder(Context ctx) throws DatabaseException {
@@ -49,5 +50,17 @@ public class OrderController {
             amount[i] = i + 1;
         }
         ctx.attribute("amounts", amount);
+    }
+
+    private static void getBasket(Context ctx) throws DatabaseException {
+        User user = ctx.sessionAttribute("user");
+        if(user == null){
+            ctx.redirect("/login");
+            return;
+        }
+        int userId = user.getId();
+        List<Order> orders = OrdersMapper.getOrdersWithPrice(userId);
+        ctx.attribute("basket", orders);
+        ctx.render("basket.html");
     }
 }
