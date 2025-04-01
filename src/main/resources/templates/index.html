@@ -28,13 +28,10 @@
                     <img id="dropdown-button" class="show" src="../public/images/dropdown_button.svg" alt="Menu button">
                 </button>
             </li>
-
             <div id="myLinks">
-                <a href="#orders" th:if="${role == null}">Ordrer</a>
                 <a th:href="@{/admin/orders}" th:if="${role == 'admin'}">Ordrer</a>
                 <a th:href="@{/admin/customers}" th:if="${role == 'admin'}">Kunder</a>
             </div>
-            <li class="menu-item desktop" th:if="${role == null}"><a href="#orders">Ordrer</a></li>
             <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/orders}">Ordrer</a></li>
             <li class="menu-item desktop" th:if="${role == 'admin'}"><a th:href="@{/admin/customers}">Kunder</a></li>
             <li class="right-align-nav" th:if="${email == null}">
