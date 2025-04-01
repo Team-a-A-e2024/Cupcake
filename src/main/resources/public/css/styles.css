@@ -432,3 +432,11 @@ tbody tr:hover {
 .pay-button:hover {
     background-color: #7435c3;
 }
+
+.errorMessage{
+    color: #cc0000;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-right: 1rem;
+}
