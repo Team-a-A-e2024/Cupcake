@@ -80,12 +80,13 @@ class UsersMapperTest {
         String email = "cph-ab632@cphbusiness.dk";
         String password = "Test1";
 
-        User user = UsersMapper.getUserByEmailAndPassword(email, password);
+        User user = UsersMapper.getUserByEmail(email);
 
         assertNotNull(user);
         assertEquals(email, user.getEmail());
         assertNull(user.getRole());
         assertEquals(0, user.getCredit());
+        assertEquals(password, user.getPassword());
     }
 
     @Test
@@ -93,17 +94,16 @@ class UsersMapperTest {
         String email = "admin@olsker.dk";
         String wrongPassword = "WrongPass";
 
-        User user = UsersMapper.getUserByEmailAndPassword(email, wrongPassword);
+        User user = UsersMapper.getUserByEmail(email);
 
-        assertNull(user);
+        assertNotEquals(wrongPassword, user.getPassword());;
     }
 
     @Test
     void testLoginUnknownUser() throws DatabaseException {
         String email = "not@existing.dk";
-        String password = "whatever";
 
-        User user = UsersMapper.getUserByEmailAndPassword(email, password);
+        User user = UsersMapper.getUserByEmail(email);
 
         assertNull(user);
     }

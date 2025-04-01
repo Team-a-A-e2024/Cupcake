@@ -3,6 +3,7 @@ package app.persistence;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.util.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class UsersMapper {
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ps.setString(1,user.getEmail());
-                ps.setString(2,user.getPassword());
+                ps.setString(2,PasswordUtil.hashPassword(user.getPassword()));
                 ps.setString(3,user.getRole());
                 ps.setDouble(4,user.getCredit());
                 try (var rs = ps.executeQuery()) {
@@ -48,34 +49,6 @@ public class UsersMapper {
         {
             throw new DatabaseException(e.getMessage());
         }
-    }
-    public static User getUserByEmailAndPassword(String email, String password) throws DatabaseException{
-        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return new User(
-                        rs.getInt("id"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("role"),
-                        rs.getDouble("credit")
-                );
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException(e.getMessage());
-        }
-
-        return null;
     }
 
     public static User getUserByEmail(String email) throws DatabaseException{
