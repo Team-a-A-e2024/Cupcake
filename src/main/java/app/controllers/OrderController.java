@@ -9,6 +9,7 @@ import app.persistence.BottomsMapper;
 import app.persistence.OrdersMapper;
 import app.persistence.ToppingsMapper;
 import app.persistence.UsersMapper;
+import app.util.SessionUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -29,7 +30,7 @@ public class OrderController {
         String topping = ctx.formParam("topping");
         int amount = Integer.parseInt(ctx.formParam("amount"));
 
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
         if (user == null) {
             ctx.redirect("/login");
             return;
@@ -61,7 +62,7 @@ public class OrderController {
     }
 
     private static void getBasket(Context ctx) throws DatabaseException {
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
         if(user == null){
             ctx.redirect("/login");
             return;
@@ -92,7 +93,7 @@ public class OrderController {
     }
 
     private static void payOrder(Context ctx) throws DatabaseException {
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
         if (user == null) {
             ctx.redirect("/login");
             return;
@@ -103,7 +104,7 @@ public class OrderController {
         for (Order o : orders) {
             price += o.getPrice() * o.getAmount();
         }
-        if(price - user.getCredit() >= 0){
+        if(user.getCredit() - price < 0){
             ctx.attribute("email", user.getEmail());
             ctx.attribute("role", user.getRole());
             ctx.attribute("errorMessage", "Du har ikke nok penge på kontoen");
@@ -116,7 +117,6 @@ public class OrderController {
             OrdersMapper.updateProcessStatus(true, o.getId());
         }
         user.setCredit(user.getCredit() - price);
-        ctx.sessionAttribute("user", user);
         UsersMapper.updateUserCredit(user);
         ctx.redirect("/");
     }

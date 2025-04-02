@@ -5,6 +5,7 @@ import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.OrdersMapper;
 import app.persistence.UsersMapper;
+import app.util.SessionUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -18,7 +19,7 @@ public class AdminController {
     }
 
     private static void displayOrders(Context ctx) throws DatabaseException {
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
 
         List<Order> orders = OrdersMapper.getOrders();
         if (user != null && user.getRole().equals("admin")) {
@@ -33,7 +34,7 @@ public class AdminController {
     }
 
     private static void displayCustomers(Context ctx) throws DatabaseException {
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
 
         List<User> users = UsersMapper.getUsersAndOrders();
         if (user != null && user.getRole().equals("admin")) {
