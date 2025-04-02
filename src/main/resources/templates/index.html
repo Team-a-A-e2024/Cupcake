@@ -54,21 +54,21 @@
         <form method="post" enctype="multipart/form-data">
             <div class="cupcake-form">
                 <label for="bottom">Vælg bund</label>
-                <select name="bottom" id="bottom">
+                <select name="bottom" id="bottom" required>
                     <option value="" disabled selected>Vælg bund</option>
                     <option th:each="bottom : ${bottomTypes}" th:value="${bottom.bottom}"
                             th:text="${bottom.bottom} + ' ' + ${bottom.price} + ' kr.'"></option>
                 </select>
 
                 <label for="topping">Vælg topping</label>
-                <select name="topping" id="topping">
+                <select name="topping" id="topping" required>
                     <option value="" disabled selected>Vælg toppping</option>
                     <option th:each="topping : ${toppingTypes}" th:value="${topping.topping}"
                             th:text="${topping.topping} + ' ' + ${topping.price} + ' kr.'"></option>
                 </select>
 
                 <label for="amount">Vælg antal</label>
-                <select name="amount" id="amount">
+                <select name="amount" id="amount" required>
                     <option value="" disabled selected>Vælg antal</option>
                     <option th:each="amount : ${amounts}" th:value="${amount}" th:text="${amount}"></option>
                 </select>

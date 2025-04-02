@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.util.SessionUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -15,7 +16,7 @@ public class HomeController {
         OrderController.getBottoms(ctx);
         OrderController.getToppings(ctx);
         OrderController.getAmount(ctx);
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
 
         if (user != null) {
             ctx.attribute("email", user.getEmail());

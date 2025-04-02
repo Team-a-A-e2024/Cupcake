@@ -1,19 +1,13 @@
 package app.controllers;
 
 import app.entities.User;
-import app.persistence.ConnectionPool;
 import app.persistence.UsersMapper;
 import app.util.PasswordUtil;
+import app.util.SessionUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 public class LoginController {
-
-    private static ConnectionPool connectionPool;
-
-    public LoginController(ConnectionPool pool) {
-        connectionPool = pool;
-    }
 
     public static void routes(Javalin app) {
         app.get("/login", LoginController::showLoginPage);
@@ -22,7 +16,7 @@ public class LoginController {
     }
 
     public static void showLoginPage(Context ctx) {
-        User user = ctx.sessionAttribute("user");
+        User user = SessionUtil.UpdateUser(ctx.sessionAttribute("user"));
         if (user != null) {
             ctx.attribute("email", user.getEmail());
         }
